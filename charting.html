@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Drawing Shapes"/>
+    <meta charset="utf-8">
+    <title>Drawing Shapes</title>
+    <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<script>  //bar chart
+var w = 200;
+var h = 100;
+var padding = 2; 
+var dataset = [5,10,15,20,25];
+var svg = d3.select("body").append("svg").attr("width",w).attr("height",h);
+svg.selectAll("rect")
+.data(dataset)
+.enter()
+.append("rect")
+.attr({
+    x:function(d,i) //i is index of dataset    d is the dataset being passed in
+    {return i*(w / dataset.length);},
+    y:function(d)    //coordinate system appears in top left, to make it appear normally subtract data from height
+    {return h-d*4;},
+    width:w / dataset.length-padding,  // five bars that take up the width of the svg
+    height:function(d)
+    {return d*4;},
+    fill:function(d) 
+    {return "rgb(" + (d*10) + ", 0, 0)";} //shades of red
+});
+</script>
+</body>
+</html>

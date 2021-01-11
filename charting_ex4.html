@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Drawing Shapes"/>
+    <meta charset="utf-8">
+    <title>Line Graph</title>
+    <script src="https://d3js.org/d3.v6.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<script> //line graph
+
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom
+
+var dataset = [
+    {"month":10,"sales":20},
+    {"month":20,"sales":14},
+    {"month":30,"sales":20},
+    {"month":40,"sales":21},
+    {"month":50,"sales":15},
+    {"month":60,"sales":22},
+    {"month":70,"sales":9},
+    {"month":80,"sales":6},
+    {"month":90,"sales":23},
+    {"month":100,"sales":7},
+];
+
+var line = d3.line()
+.x(function(d) {return d.month*2;})
+.y(function(d) {return d.sales;})
+
+var svg = d3.select("body").append("svg").attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom);
+
+var viz = svg.append("path")
+.data([dataset])
+      .attr("class", "line")
+      .attr("d", line)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+
+</script>
+</body>
+</html>
