@@ -7,25 +7,51 @@
     <script src="https://d3js.org/d3.v6.min.js" charset="utf-8"></script>
 </head>
 <body>
-    <script>
 
-    var h=100;
-    var w=400;
+    <script>
     
-    d3.json("MonthlySales.json").then(function(data) {  
+    d3.csv("MonthlySales.csv").then(function(data) {  
 
         var dataset = data
+        var h=100;
+        var w=400;
+        var salesTotal=0.0
+        var salesAvg=0.0
+        var metrics=[]
     
-        var line = d3.line()
-        .x(function (d) {return ((d.month-20130001)/3.25)})
-        .y(function (d) {return h-d.sales; })
-    
-        var svg = d3.select("body").append("svg").attr("width",w).attr("height",h)
-    
-        svg.append("path").datum(dataset).attr("class","line").attr("d",line)
-           .attr("fill","none").attr("stroke","purple").attr("stroke-width","2")
+        function showTotals() {
 
-        });
+            var t = d3.select("body").append("table")
+            for (var i=0; i < dataset.length; i++) {
+                salesTotal += dataset[i]["sales"]*1;
+            }
+
+            salesAvg = salesTotal/dataset.length
+
+            metrics.push("Sales Total: " + salesTotal)
+            metrics.push("Sales Avg: " + salesAvg.toFixed(2))
+
+            var tr = t.selectAll("tr").data([metrics]).enter().append("tr").append("td").text(function(d){return d})
+        }
+
+        function buildLine() {
+
+            var line = d3.line()
+
+            .x(function (d) {return ((d.month-20130001)/3.25)})
+            .y(function (d) {return h-d.sales; })
+
+            var svg = d3.select("body").append("svg").attr("width",w).attr("height",h)
+            
+            svg.append("path").datum(dataset).attr("class","line").attr("d",line).attr("fill","none").attr("stroke","purple").attr("stroke-width","2")
+        }
+
+        showTotals()
+        buildLine()
+
+        })
+
     </script>
+
 </body>
 </html>

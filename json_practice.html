@@ -3,29 +3,43 @@
 <head>
     <meta name="description" content="JSON"/>
     <meta charset="utf-8">
-    <title>JSON</title>
+    <title>CSV</title>
     <script src="https://d3js.org/d3.v6.min.js" charset="utf-8"></script>
 </head>
 <body>
-    <script>
 
-var h=100;
-    var w=400;
+    <script>
     
-    d3.json("MonthlySales.json").then(function(data) { 
+    d3.json("MonthlySales3.json").then(function(data) {  
 
         var dataset = data
+        var h=100;
+        var w=400;
     
-        var line = d3.line()
-        .x(function (d) {return ((d.month-20130001)/3.25)})
-        .y(function (d) {return h-d.sales; })
-    
-        var svg = d3.select("body").append("svg").attr("width",w).attr("height",h)
-    
-        svg.append("path").datum(dataset).attr("class","line").attr("d",line)
-           .attr("fill","none").attr("stroke","purple").attr("stroke-width","2")
+        function showHeader(dataset) {
+            d3.select("body").append("h1").text(dataset.category + " Sales (2013)")
+        }
 
-        });
+        function buildLine(dataset) {
+
+            var line = d3.line()
+
+            .x(function (d) {return ((d.month-20130001)/3.25)})
+            .y(function (d) {return h-d.sales; })
+
+            var svg = d3.select("body").append("svg").attr("width",w).attr("height",h)
+            
+            svg.append("path").datum(dataset.monthlySales).attr("class","line").attr("d",line).attr("fill","none").attr("stroke","purple").attr("stroke-width","2")
+        }
+
+        dataset.contents.forEach(function(dataset) {
+            showHeader(dataset)
+            buildLine(dataset)
+        })
+
+        })
+
     </script>
+
 </body>
 </html>
